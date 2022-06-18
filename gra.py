@@ -1,5 +1,28 @@
 import random,os
-H="♥X"
+
+#CUSTOM SETTINGS
+H="♥X" #character used for HP⌈
+base=2   #base to use (!Warning experimental)
+
+
+def to_n_base(num,base):
+    number=[]
+    while num>base:
+        number+=[num%base]
+        num//=base
+    return[num]+number
+def test(f,table):
+    """function that test function as answer to level"""
+    for i in table:
+        if f(*i)!=table[i]:
+            return False,f"not correct(test faild) at {i}: {f(*i)}!={table[i]}"
+    return True,'NaN'
+
+def printTable(table):
+    """prints table in fun way!"""
+    print('your table')
+    for i in table:
+        print(i,table[i],sep=":")
 while True:
     print("press ctrl+c to close")
     
@@ -12,25 +35,14 @@ while True:
         random.seed(sum([ord(i) for i in makeseed]))
     print('użuj syntaxu pythona żeby robić bramki logiczne!')
 
-    def test(f,table):
-        """function that test function as answer to level"""
-        for i in table:
-            if f(*i)!=table[i]:
-                return False,f"not correct(test faild) at {i} {f(*i)}+"
-        return True,'NaN'
-    
-    def printTable(table):
-        """prints table in fun way!"""
-        print('your table')
-        for i in table:
-            print(i,table[i],sep=":")
+
 
     print("(E)asy  -> for noobs!")
     print("(N)rmal -> for people")
     print("(H)ard  -> haker mode")
     
     odp=input("choose>").lower()
-    
+    EA=False
     if odp=="n":
         levelO=2
         levelI=2
@@ -57,6 +69,7 @@ while True:
         maxLevel=42
     
     HC=False
+
     print("do you wanna survival hardcore (Y/N)")
     if input("choose:").lower()=='y':
         HC=True
@@ -64,12 +77,14 @@ while True:
     hp=10
     level=0
     while True:
+
+        #random gate generator
         table={}
-        for i in range(0,2**levelI):
-            arINP=[int(j) for j in bin(i).split('b')[1]]
+        for i in range(0,base**levelI):
+            arINP=to_n_base(i,base)
             if len(arINP)<levelI:
                 arINP=([0]*(levelI-len(arINP)))+arINP
-            table[tuple(arINP)]=[random.choice([1,0]) for i in range(levelO)]
+            table[tuple(arINP)]=[random.randint(0,base-1) for i in range(levelO)]
     
         print(f"LEVEL:{level} I:{levelI} O:{levelO}")
         ins=[chr(97+i) for i in range(levelI)]
