@@ -144,3 +144,6 @@ while True:
         if hp==0:
             print("you lost on:",level)
             break
+
+
+# credits to Wayhe for ideas how to improve
